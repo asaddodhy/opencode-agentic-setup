@@ -1,0 +1,11 @@
+# Secrets and local config
+.env
+opencode.db
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
