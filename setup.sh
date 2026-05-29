@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# opencode-agent-setup — one-command setup
+# opencode-agentic-setup — one-command setup
 # This script copies configs and prompts to the right locations.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
