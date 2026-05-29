@@ -60,14 +60,14 @@ mkdir my-project && cd my-project
 Copy the project-level config:
 
 ```bash
-cp /path/to/opencode-agent-setup/config/project/opencode.json ./opencode.json
+cp /path/to/opencode-agentic-setup/config/project/opencode.json ./opencode.json
 ```
 
 Initialize the wisdom directory:
 
 ```bash
 mkdir -p wisdom/plans wisdom/tasks
-cp /path/to/opencode-agent-setup/wisdom/*.md wisdom/
+cp /path/to/opencode-agentic-setup/wisdom/*.md wisdom/
 ```
 
 ### 5. Launch OpenCode
@@ -161,7 +161,7 @@ opencode attach http://localhost:4096 --username opencode --password $OPENCODE_S
 ## File Layout
 
 ```
-opencode-agent-setup/
+opencode-agentic-setup/
 ├── README.md                      ← This file
 ├── setup.sh                       ← One-command setup script
 ├── config/
