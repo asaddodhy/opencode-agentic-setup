@@ -198,6 +198,14 @@ else
     echo "  ✅ the-doctor already cloned"
 fi
 
+# Install WhatsApp bridge dependencies (the-doctor/whatsapp/)
+if [ -d "$HOME/Documents/Development/the-doctor/whatsapp" ]; then
+    echo "  Installing WhatsApp bridge dependencies..."
+    cd "$HOME/Documents/Development/the-doctor/whatsapp"
+    npm install 2>&1 | tail -3
+    echo "  ✅ WhatsApp bridge dependencies installed"
+fi
+
 # ── Done ───────────────────────────────────────────────────
 echo ""
 echo "╔══════════════════════════════════════════════════════╗"

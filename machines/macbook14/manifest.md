@@ -45,9 +45,20 @@ cd opencode-agentic-setup/machines/macbook14/
 ./setup.sh
 ```
 
+## Capabilities
+
+This machine includes reusable capabilities that any agent can adopt:
+
+| Capability | Location | How to use |
+|-----------|----------|-----------|
+| **Telegram voice transcription** | `patches/telegram-bot/` | Apply `voice.js.patch` + `config.js.patch` to `@grinev/opencode-telegram-bot` |
+| **WhatsApp voice bridge** | `asaddodhy/the-doctor/whatsapp/` | Clone `the-doctor`, run `node whatsapp/listener.mjs`, scan QR to link device |
+| **Perplexity MCP bridge** | `asaddodhy/perplexity-stack/scripts/transcribe.py` | Transcribes audio via Perplexity MCP client |
+
 ## Notes
 
 - The Telegram bot bridge script (`transcribe.py`) lives in the `perplexity-stack` repo, not in this backup. Setup.sh will clone it.
 - The Doctor repo (`asaddodhy/the-doctor`) is now on GitHub and will be cloned automatically by setup.sh.
+- The WhatsApp bridge uses `whatsapp-web.js` (puppeteer-based) — requires Node.js and Google Chrome.
 - The patches assume `@grinev/opencode-telegram-bot` v0.21.0. If the version changes, patches may need updating.
 - Wisdom directory is symlinked (`~/Documents/Openwork/wisdom/` → `~/Documents/Open Code/wisdom/`).
