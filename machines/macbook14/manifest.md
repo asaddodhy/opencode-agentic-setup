@@ -48,5 +48,6 @@ cd opencode-agentic-setup/machines/macbook14/
 ## Notes
 
 - The Telegram bot bridge script (`transcribe.py`) lives in the `perplexity-stack` repo, not in this backup. Setup.sh will clone it.
+- The Doctor repo (`asaddodhy/the-doctor`) is now on GitHub and will be cloned automatically by setup.sh.
 - The patches assume `@grinev/opencode-telegram-bot` v0.21.0. If the version changes, patches may need updating.
 - Wisdom directory is symlinked (`~/Documents/Openwork/wisdom/` → `~/Documents/Open Code/wisdom/`).
