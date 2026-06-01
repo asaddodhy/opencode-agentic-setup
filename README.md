@@ -1,6 +1,6 @@
 # OpenCode Agent Team Setup
 
-A portable multi-agent development team for [OpenCode](https://opencode.ai), featuring:
+A portable multi-agent development team for [OpenCode](https://opencode.ai) and [OpenWork](https://opencode.ai), featuring:
 
 | Agent | Role | Mode |
 |---|---|---|
@@ -77,6 +77,24 @@ opencode
 ```
 
 You're now running with the full agent team. **Alfred** is the default agent (build mode). Use `/agent` or the UI to switch.
+
+---
+
+## OpenWork Setup
+
+The same agent team also works in **OpenWork** (the desktop app).
+
+### Quick Start
+
+```bash
+# Run the setup with the --openwork flag
+./setup.sh --openwork
+
+# Or set a custom workspace path:
+OPENWORK_WORKSPACE_DIR=~/Documents/MyWorkspace ./setup.sh --openwork
+```
+
+Then follow the full guide at `openwork/SETUP_OPENWORK.md` for co-work integration, git identity, and session protocols.
 
 ---
 
@@ -182,6 +200,15 @@ opencode-agentic-setup/
 │   ├── issues.md                  ← Starter template
 │   ├── plans/                     ← Feature plans directory
 │   └── tasks/                     ← Task tracking directory
+├── openwork/                      ← OpenWork app support
+│   ├── agents/                    ← Agent .md files for OpenWork
+│   │   ├── alfred.md
+│   │   ├── prometheus.md
+│   │   ├── atlas.md
+│   │   ├── michael.md
+│   │   ├── michael-quick.md
+│   │   └── michael-deep.md
+│   └── SETUP_OPENWORK.md          ← Step-by-step OpenWork setup guide
 ├── telegram-bot/
 │   └── .env.example               ← Telegram bot config template
 └── scripts/
@@ -201,3 +228,4 @@ opencode-agentic-setup/
 - **Permissions**: Adjust the `permission` blocks in `opencode.json` to set tool access levels
 - **Models**: Add/remove models in the global config's `provider.perp.models` section
 - **Git identity**: Update the identity info in the Michael prompts to match your setup
+- **OpenWork agents**: Edit the `.md` files in `openwork/agents/` to customize OpenWork agent behavior
