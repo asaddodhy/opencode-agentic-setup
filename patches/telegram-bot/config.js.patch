@@ -1,0 +1,12 @@
+--- /var/folders/xc/h3d4r7b14p574svvfpf68v2w0000gn/T/tmp.uOVbuvX7v9/package/dist/config.js	1985-10-26 09:15:00
++++ /opt/homebrew/lib/node_modules/@grinev/opencode-telegram-bot/dist/config.js	2026-06-01 12:59:37
+@@ -132,6 +132,9 @@
+         language: getEnvVar("STT_LANGUAGE", false),
+         notePrompt: getEnvVar("STT_NOTE_PROMPT", false),
+     },
++    voice: {
++        followupPrompt: getEnvVar("VOICE_FOLLOWUP_PROMPT", false) || "What should I do with this transcription?",
++    },
+     tts: (() => {
+         const provider = getOptionalTtsProviderEnvVar("TTS_PROVIDER", "openai");
+         const defaultVoice = provider === "google" ? "en-US-Studio-O" : "alloy";
