@@ -20,6 +20,9 @@ A portable multi-agent development team for [OpenCode](https://opencode.ai) and 
 
 ## Quick Start
 
+> **New machine?** Follow the steps below.
+> **Recovering a wiped MacBook 14"?** Skip to [Recovery](#recovery-macbook-14).
+
 ### 1. Install OpenCode
 
 ```bash
@@ -77,6 +80,35 @@ opencode
 ```
 
 You're now running with the full agent team. **Alfred** is the default agent (build mode). Use `/agent` or the UI to switch.
+
+---
+
+## Recovery (MacBook 14")
+
+If you wiped this machine and need to restore the OpenCode Agentic Setup exactly as it was:
+
+```bash
+git clone https://github.com/asaddodhy/opencode-agentic-setup.git
+cd opencode-agentic-setup/machines/macbook14/
+./setup.sh
+```
+
+The setup script will:
+1. Install OpenCode (via Homebrew)
+2. Install the Telegram bot (`@grinev/opencode-telegram-bot`)
+3. Apply custom patches for audio transcription support
+4. Set up the OpenWork workspace with agent files and skills
+5. Prepare `.env` template (you fill in secrets)
+6. Set up wisdom symlink and git identity
+7. Clone project repos (co-work, perplexity-stack, the-doctor)
+
+> **Note:** The `machines/` directory contains full machine-specific backups.
+> See `machines/macbook14/manifest.md` for details on what's included.
+
+**Telegram bot patches** are also available generically for any machine:
+- Patches: `patches/telegram-bot/` — apply to any `@grinev/opencode-telegram-bot` install
+- These enable voice/audio transcription via Perplexity MCP bridge
+- See `patches/telegram-bot/README.md` for manual apply/revert instructions
 
 ---
 

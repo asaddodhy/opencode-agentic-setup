@@ -1,0 +1,92 @@
+--- /var/folders/xc/h3d4r7b14p574svvfpf68v2w0000gn/T/tmp.uOVbuvX7v9/package/dist/bot/handlers/voice.js	1985-10-26 09:15:00
++++ /opt/homebrew/lib/node_modules/@grinev/opencode-telegram-bot/dist/bot/handlers/voice.js	2026-06-01 12:59:47
+@@ -1,6 +1,9 @@
+ import http from "node:http";
+ import https from "node:https";
+ import { URL } from "node:url";
++import { execFile } from "node:child_process";
++import { writeFileSync, unlinkSync } from "node:fs";
++import { join } from "node:path";
+ import { HttpsProxyAgent } from "https-proxy-agent";
+ import { SocksProxyAgent } from "socks-proxy-agent";
+ import { config } from "../../config.js";
+@@ -132,7 +135,78 @@
+     }
+     // Check if STT is configured
+     if (!sttConfigured()) {
+-        await ctx.reply(t("stt.not_configured"));
++        // No STT configured → transcribe via Perplexity directly, then send text to OpenCode
++        const fileData = await downloadFile(ctx, fileId);
++        if (!fileData) {
++            await ctx.reply("Failed to download audio file.");
++            return;
++        }
++
++        const statusMsg = await ctx.reply("Transcribing voice message...");
++
++        // Write audio to temp file
++        const tmpPath = join("/tmp", `telegram_voice_${Date.now()}_${fileData.filename}`);
++        writeFileSync(tmpPath, fileData.buffer);
++
++        // Path to the Python bridge script
++        const scriptPath = "/Users/asadpreuss-dodhy/Documents/Development/perplexity-stack/scripts/transcribe.py";
++        const pythonPath = "/Users/asadpreuss-dodhy/Documents/Development/perplexity-stack/perplexity-web-wrapper/.venv/bin/python3";
++
++        try {
++            const transcription = await new Promise((resolve, reject) => {
++                execFile(pythonPath, [scriptPath, tmpPath], {
++                    timeout: 120_000,
++                    maxBuffer: 10 * 1024 * 1024,
++                }, (error, stdout, stderr) => {
++                    if (error) {
++                        reject(new Error(`Transcription script failed: ${error.message}\nStderr: ${stderr}`));
++                        return;
++                    }
++                    try {
++                        const result = JSON.parse(stdout.trim());
++                        if (result.text) {
++                            resolve(result.text);
++                        } else {
++                            reject(new Error("Transcription returned empty result"));
++                        }
++                    } catch (parseError) {
++                        reject(new Error(`Failed to parse transcription output: ${parseError.message}\nOutput: ${stdout.slice(0, 500)}`));
++                    }
++                });
++            });
++
++            // Show transcription to user
++            try {
++                await ctx.api.editMessageText(ctx.chat.id, statusMsg.message_id,
++                    `Transcription: ${transcription}`);
++            } catch (editError) {
++                // If the message is too long for Telegram, send as a new message
++                try {
++                    await ctx.reply(`Transcription: ${transcription}`);
++                } catch { /* ignore */ }
++            }
++
++            logger.info(`[Voice] Transcribed via Perplexity: ${transcription.length} chars`);
++
++            // Wrap transcription with follow-up prompt for OpenCode
++            const promptForOpenCode = `[Voice note: ${transcription}]\n\n${config.voice.followupPrompt}`;
++            logger.debug(`[Voice] Sending to OpenCode with follow-up: ${promptForOpenCode.length} chars`);
++
++            // Send transcribed text to OpenCode with follow-up instruction
++            await processPrompt(ctx, promptForOpenCode, deps);
++        } catch (err) {
++            const errorMessage = err instanceof Error ? err.message : "unknown error";
++            logger.error("[Voice] Transcription via Perplexity failed:", err);
++            try {
++                await ctx.api.editMessageText(ctx.chat.id, statusMsg.message_id,
++                    `Transcription failed: ${errorMessage}`);
++            } catch {
++                await ctx.reply(`Transcription failed: ${errorMessage}`).catch(() => {});
++            }
++        } finally {
++            // Clean up temp file
++            try { unlinkSync(tmpPath); } catch { /* ignore cleanup errors */ }
++        }
+         return;
+     }
+     // Send "recognizing..." status message (will be edited later)
