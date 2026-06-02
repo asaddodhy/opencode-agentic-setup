@@ -241,11 +241,58 @@ opencode-agentic-setup/
 │   │   ├── michael-quick.md
 │   │   └── michael-deep.md
 │   └── SETUP_OPENWORK.md          ← Step-by-step OpenWork setup guide
+├── capabilities/
+│   └── telegram-voice-perplexity-transcription.md  ← Generic capability pattern
+├── patches/
+│   ├── telegram-bot/               ← Voice transcription patches for @grinev/opencode-telegram-bot
+│   │   ├── README.md
+│   │   ├── voice.js.patch
+│   │   └── config.js.patch
+│   └── whatsapp-bridge/            ← WhatsApp voice bridge capability
+│       └── README.md
+├── machines/
+│   └── macbook14/                  ← Full machine backup (agents, skills, setup.sh, templates)
 ├── telegram-bot/
 │   └── .env.example               ← Telegram bot config template
 └── scripts/
     └── (future)
 ```
+
+## Reusable Capabilities
+
+The `capabilities/` directory contains generic, reusable patterns that any
+agent can adopt for common workflows:
+
+| Capability | File | Description |
+|-----------|------|-------------|
+| **Telegram Voice → Perplexity Transcription → Action** | `capabilities/telegram-voice-perplexity-transcription.md` | Receive audio via Telegram, transcribe via Perplexity, plug in any custom action |
+
+Each capability includes:
+- Prerequisites and one-time setup instructions
+- Copy-paste code templates
+- Multiple action pattern examples (reply, translate, extract data, trigger workflow)
+- Troubleshooting guide
+
+## Machine Backup & Recovery
+
+This repo contains a full machine backup for the MacBook 14" development machine:
+
+```
+machines/macbook14/
+├── setup.sh           ← Full 14-step recovery script
+├── manifest.md         ← Complete inventory of what's backed up
+├── agents/             ← Agent .md files
+├── skills/             ← Installed skills (includes backup skill)
+├── patches/            → symlink to ../../patches/ (Telegram patches)
+└── templates/          ← Config templates (opencode.jsonc, .env)
+```
+
+**To restore a wiped machine:** `cd machines/macbook14/ && ./setup.sh`
+
+**To update the backup** after making changes, use the backup skill:
+- Say "backup" while in the OpenWork workspace, or
+- Run: `/skill backup` in OpenCode
+- Or manually: copy files and push (see `machines/macbook14/skills/backup/SKILL.md`)
 
 ## Security Notes
 
