@@ -109,13 +109,20 @@
 
 ## Capabilities Backed Up as Generic Reusable Patterns
 
-These are in `opencode-agentic-setup/patches/` and can be adopted by any agent on any machine:
+These can be adopted by any agent on any machine. Each includes the EXACT
+working code, prompts, models, and parsing logic.
 
-| Capability | Location | Documentation |
-|-----------|----------|--------------|
-| **Telegram bot voice transcription** | `patches/telegram-bot/` | `README.md` + `voice.js.patch` + `config.js.patch` |
-| **WhatsApp voice bridge** | `patches/whatsapp-bridge/` | `README.md` |
-| **Perplexity audio transcription** | *(planned — see capabilities/)* | Generic "Telegram Voice → Perplexity → Action" pattern |
+| Capability | Location | What it contains |
+|-----------|----------|-----------------|
+| **Telegram Voice → Perplexity → Action** | `capabilities/telegram-voice-perplexity-transcription.md` | Full standalone setup: bridge script (exact prompt, model, mode, response parsing), Telegram listener with OGG→WAV conversion, env config, troubleshooting. **Start here for any agent that needs audio transcription.** |
+| **Telegram bot (OpenCode patches)** | `patches/telegram-bot/` | Patches for `@grinev/opencode-telegram-bot` — voice transcription inside the OpenCode ecosystem |
+| **WhatsApp voice bridge** | `patches/whatsapp-bridge/` | WhatsApp voice note listener via whatsapp-web.js |
+
+**To replicate on a new machine**, an agent should:
+1. Read `capabilities/telegram-voice-perplexity-transcription.md` for the full setup
+2. Copy `scripts/transcribe.py` and `telegram_listener.py` from that doc
+3. Follow the prerequisite steps (clone wrapper, sync venv, get cookies, ffmpeg)
+4. No guessing — every prompt, model, port, and parsing rule is documented
 
 ## Recovery Steps
 
